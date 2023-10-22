@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 interface Stopage {
   stop_id: string;
@@ -10,7 +10,7 @@ interface Stopage {
 
 interface Seat {
   seat_id: string;
-  status: "Booked" | "Sold" | "Unsold" | "Selected";
+  status: "Booked" | "Sold" | "Unsold";
   sold_on: "Counter" | "Online" | null;
 }
 
@@ -29,7 +29,7 @@ interface BusData {
   seat_row: number;
   seat_column: number;
   last_seat_column: number;
-  seat: Seat[];
+  seat: Seat[][];
   route_and_price: RouteAndPrice[];
 }
 
@@ -41,20 +41,24 @@ const BookingMainComponent: React.FC<BookingMainComponentProps> = ({
   data,
 }) => {
   const [isWide, setWide] = useState(0);
+  //   console.log(data);
 
-  let selectedSeats = data?.seat;
+  const [selectedSeats, setSelectedSeats] = useState<string[]>([]);
 
-  const handleSelectSeat = (seat_index: number) => {
-    console.log(seat_index);
-
-    if (selectedSeats[seat_index].status == "Selected") {
-      selectedSeats[seat_index].status = "Unsold";
+  const handleSelectSeat = (seat_id: string) => {
+    let temArray = selectedSeats;
+    if (temArray?.includes(seat_id)) {
+      console.log("removing");
+      temArray = temArray.filter((seat) => seat !== seat_id);
     } else {
-      selectedSeats[seat_index].status == "Selected";
+      temArray.push(seat_id);
+      console.log("pushing");
     }
 
-    console.log(selectedSeats);
+    setSelectedSeats(temArray);
   };
+
+  console.log(selectedSeats);
 
   return (
     <div>
@@ -93,39 +97,38 @@ const BookingMainComponent: React.FC<BookingMainComponentProps> = ({
               </div>
               {/* SEAT SELECTION */}
 
-              <div className="p-6 border rounded-lg  grid grid-cols-4 justify-center items-center gap-4">
-                {selectedSeats?.map((seat, index) => {
-                  return (
-                    <div
-                      key={index}
-                      className="text-[10px] flex flex-col justify-center items-center"
-                    >
-                      {seat?.status == "Sold" || seat?.status == "Booked" ? (
-                        <button
-                          className={
-                            "h-[48px] w-[48px] bg-secondary border-2 rounded-lg"
-                          }
-                          disabled={true}
-                        />
-                      ) : (
-                        <button
-                          className={
-                            seat?.status == "Unsold"
-                              ? "h-[48px] w-[48px] bg-white border-2 rounded-lg"
-                              : "h-[48px] w-[48px] bg-green-500 border-2 rounded-lg"
-                          }
-                          onClick={() => {
-                            handleSelectSeat(index);
-                          }}
-                        />
-                      )}
-
-                      <p className="text-center mt-2 font-bold">
-                        {seat?.seat_id}
-                      </p>
-                    </div>
-                  );
-                })}
+              <div className="p-6 border rounded-lg flex flex-col gap-4">
+                {data?.seat?.map((row, index) => (
+                  <div key={index} className="flex  gap-4">
+                    {row.map((seat, index) => {
+                      return (
+                        <div key={index} className="text-[10px]">
+                          <button
+                            className={
+                              seat?.status == "Sold" || seat?.status == "Booked"
+                                ? "h-[48px] w-[48px] bg-secondary border-2 rounded-lg"
+                                : selectedSeats?.includes(seat?.seat_id)
+                                ? "h-[48px] w-[48px] bg-primary border-2 rounded-lg"
+                                : "h-[48px] w-[48px] bg-white border-2 rounded-lg"
+                            }
+                            disabled={
+                              seat?.status == "Sold" || seat?.status == "Booked"
+                                ? true
+                                : false
+                            }
+                            onClick={() => {
+                              handleSelectSeat(seat?.seat_id);
+                              console.log(seat?.seat_id);
+                            }}
+                          />
+                          <p className="text-center mt-2 font-bold">
+                            {seat?.seat_id}
+                          </p>
+                        </div>
+                      );
+                    })}
+                  </div>
+                ))}
               </div>
             </div>
 

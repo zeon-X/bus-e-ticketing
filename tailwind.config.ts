@@ -20,17 +20,18 @@ const config: Config = {
       {
         custom1: {
           "primary": "#006847",
-          "secondary": "#079D49",
+          "secondary": "#DA924E",
           "accent": "#d6d3d1",
           "neutral": "#f8f8f8",
           "base-100": "#f3f4f6",
           "info": "#2e2c34",
-          "success": "#006847",
+          "success": "#079D49",
           "warning": "#AE5904",
           "error": "#F5324C",
           "white": "#FFFFFF",
-          "offwhite": "#7F7F7F",
+          "offwhite": "#F7F7F7",
           "black": "#000000",
+          "selecetd": "#384C6B",
         },
       },
       "light", "cupcake"

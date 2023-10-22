@@ -41,20 +41,35 @@ const BookingMainComponent: React.FC<BookingMainComponentProps> = ({
   data,
 }) => {
   const [isWide, setWide] = useState(0);
+  const [selectedSeats, setSelectedSeats] = useState<Seat[]>(data?.seat);
 
-  let selectedSeats = data?.seat;
+  useEffect(() => {
+    setSelectedSeats(data?.seat);
+  }, [data]);
 
   const handleSelectSeat = (seat_index: number) => {
-    console.log(seat_index);
+    let temArray = selectedSeats;
+    // console.log(seat_index);
+    // console.log(temArray[seat_index]);
 
-    if (selectedSeats[seat_index].status == "Selected") {
-      selectedSeats[seat_index].status = "Unsold";
+    if (temArray[seat_index].status == "Selected") {
+      temArray[seat_index] = {
+        ...temArray[seat_index],
+        status: "Unsold",
+        };
+        
     } else {
-      selectedSeats[seat_index].status == "Selected";
+      temArray[seat_index] = {
+        ...temArray[seat_index],
+        status: "Selected",
+      };
     }
+    // console.log(temArray);
 
-    console.log(selectedSeats);
+    setSelectedSeats(temArray);
   };
+
+  console.log(selectedSeats);
 
   return (
     <div>
@@ -100,26 +115,23 @@ const BookingMainComponent: React.FC<BookingMainComponentProps> = ({
                       key={index}
                       className="text-[10px] flex flex-col justify-center items-center"
                     >
-                      {seat?.status == "Sold" || seat?.status == "Booked" ? (
-                        <button
-                          className={
-                            "h-[48px] w-[48px] bg-secondary border-2 rounded-lg"
-                          }
-                          disabled={true}
-                        />
-                      ) : (
-                        <button
-                          className={
-                            seat?.status == "Unsold"
-                              ? "h-[48px] w-[48px] bg-white border-2 rounded-lg"
-                              : "h-[48px] w-[48px] bg-green-500 border-2 rounded-lg"
-                          }
-                          onClick={() => {
-                            handleSelectSeat(index);
-                          }}
-                        />
-                      )}
-
+                      <button
+                        className={
+                          seat?.status == "Selected"
+                            ? "h-[48px] w-[48px] bg-green-500 border-2 rounded-lg"
+                            : seat?.status == "Sold" || seat?.status == "Booked"
+                            ? "h-[48px] w-[48px] bg-secondary border-2 rounded-lg"
+                            : "h-[48px] w-[48px] bg-white border-2 rounded-lg"
+                        }
+                        disabled={
+                          seat?.status == "Sold" || seat?.status == "Booked"
+                            ? true
+                            : false
+                        }
+                        onClick={() => {
+                          handleSelectSeat(index);
+                        }}
+                      />
                       <p className="text-center mt-2 font-bold">
                         {seat?.seat_id}
                       </p>

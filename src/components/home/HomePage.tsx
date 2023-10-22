@@ -227,7 +227,7 @@ const HomePage = () => {
                     </div>
                 </div>
 
-                <input type="submit" className='mt-8 py-2 rounded w-full text-white bg-primary cursor-pointer hover:bg-secondary transition-all ease-in-out' value={"Search"} />
+                <input type="submit" className='mt-8 py-2 rounded w-full text-white bg-primary cursor-pointer hover:bg-success transition-all ease-in-out' value={"Search"} />
             </form>
             <Image src={homeBanner} height={345} width={545} alt="" className='rounded' />
         </div>
