@@ -1,8 +1,8 @@
 // In Booking.tsx
 
-import BookingHead from '@components/booking/BookingHead';
-import BookingMain from '@components/booking/BookingMain';
-import React from 'react';
+import BookingHead from "@components/booking/BookingHead";
+import BookingMain from "@components/booking/BookingMain";
+import React from "react";
 
 interface SearchParams {
   fromCity: string | undefined;
@@ -18,13 +18,22 @@ export default function Booking({
   params: { slug: string };
   searchParams?: SearchParams;
 }) {
-
   // console.log(searchParams);
 
   return (
     <main className="">
-      <BookingHead fromCity={`${searchParams?.fromCity}`} toCity={`${searchParams?.toCity}`} doj={`${searchParams?.doj}`} travelClass={`${searchParams?.travelClass}`} />
-      <BookingMain />
+      <BookingHead
+        fromCity={`${searchParams?.fromCity}`}
+        toCity={`${searchParams?.toCity}`}
+        doj={`${searchParams?.doj}`}
+        travelClass={`${searchParams?.travelClass}`}
+      />
+      <BookingMain
+        fromCity={`${searchParams?.fromCity}`}
+        toCity={`${searchParams?.toCity}`}
+        doj={`${searchParams?.doj}`}
+        travelClass={`${searchParams?.travelClass}`}
+      />
     </main>
   );
 }

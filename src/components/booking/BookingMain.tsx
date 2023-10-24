@@ -13,9 +13,10 @@ interface Seat {
   seat_id: string;
   status: "Booked" | "Sold" | "Unsold" | "Selected";
   sold_on: "Counter" | "Online" | null;
+  sold_to: string | null;
 }
 
-interface RouteAndPrice {
+interface RouteAndFare {
   route_id: string;
   start: string;
   dest: string;
@@ -28,10 +29,13 @@ interface BusData {
   stopage: Stopage[];
   type: string;
   seat_row: number;
-  seat_column: number;
+  seat_column_left: number;
+  seat_column_right: number;
   last_seat_column: number;
-  seat: Seat[];
-  route_and_price: RouteAndPrice[];
+  seat_left: Seat[];
+  seat_right: Seat[];
+  seat_last_row: Seat[];
+  route_and_fare: RouteAndFare[];
 }
 
 let busData: BusData[] = [
@@ -66,73 +70,249 @@ let busData: BusData[] = [
     ],
     type: "Non AC",
     seat_row: 10,
-    seat_column: 4,
+    seat_column_left: 2,
+    seat_column_right: 2,
     last_seat_column: 5,
-    seat: [
+    seat_left: [
       {
         seat_id: "A1",
         status: "Booked",
         sold_on: "Counter",
+        sold_to: null,
       },
       {
         seat_id: "A2",
         status: "Sold",
         sold_on: "Online",
+        sold_to: null,
       },
-      {
-        seat_id: "A3",
-        status: "Sold",
-        sold_on: "Online",
-      },
-      {
-        seat_id: "A4",
-        status: "Sold",
-        sold_on: "Counter",
-      },
-
       {
         seat_id: "B1",
-        status: "Unsold",
-        sold_on: null,
+        status: "Sold",
+        sold_on: "Online",
+        sold_to: null,
       },
       {
         seat_id: "B2",
         status: "Sold",
+        sold_on: "Counter",
+        sold_to: null,
+      },
+
+      {
+        seat_id: "C1",
+        status: "Unsold",
+        sold_on: null,
+        sold_to: null,
+      },
+      {
+        seat_id: "C2",
+        status: "Sold",
         sold_on: "Online",
+        sold_to: null,
+      },
+      {
+        seat_id: "D1",
+        status: "Unsold",
+        sold_on: null,
+        sold_to: null,
+      },
+      {
+        seat_id: "D2",
+        status: "Sold",
+        sold_on: "Counter",
+        sold_to: null,
+      },
+
+      {
+        seat_id: "E1",
+        status: "Booked",
+        sold_on: "Counter",
+        sold_to: null,
+      },
+      {
+        seat_id: "E2",
+        status: "Unsold",
+        sold_on: null,
+        sold_to: null,
+      },
+      {
+        seat_id: "F1",
+        status: "Unsold",
+        sold_on: null,
+        sold_to: null,
+      },
+      {
+        seat_id: "F2",
+        status: "Sold",
+        sold_on: "Counter",
+        sold_to: null,
+      },
+      {
+        seat_id: "G1",
+        status: "Unsold",
+        sold_on: null,
+        sold_to: null,
+      },
+      {
+        seat_id: "G2",
+        status: "Sold",
+        sold_on: "Counter",
+        sold_to: null,
+      },
+      {
+        seat_id: "H1",
+        status: "Unsold",
+        sold_on: null,
+        sold_to: null,
+      },
+      {
+        seat_id: "H2",
+        status: "Sold",
+        sold_on: "Counter",
+        sold_to: null,
+      },
+    ],
+    seat_right: [
+      {
+        seat_id: "A3",
+        status: "Booked",
+        sold_on: "Counter",
+        sold_to: null,
+      },
+      {
+        seat_id: "A4",
+        status: "Sold",
+        sold_on: "Online",
+        sold_to: null,
       },
       {
         seat_id: "B3",
-        status: "Unsold",
-        sold_on: null,
+        status: "Sold",
+        sold_on: "Online",
+        sold_to: null,
       },
       {
         seat_id: "B4",
         status: "Sold",
         sold_on: "Counter",
+        sold_to: null,
       },
 
-      {
-        seat_id: "C1",
-        status: "Booked",
-        sold_on: "Counter",
-      },
-      {
-        seat_id: "C2",
-        status: "Unsold",
-        sold_on: null,
-      },
       {
         seat_id: "C3",
         status: "Unsold",
         sold_on: null,
+        sold_to: null,
       },
       {
         seat_id: "C4",
         status: "Sold",
+        sold_on: "Online",
+        sold_to: null,
+      },
+      {
+        seat_id: "D3",
+        status: "Unsold",
+        sold_on: null,
+        sold_to: null,
+      },
+      {
+        seat_id: "D4",
+        status: "Sold",
         sold_on: "Counter",
+        sold_to: null,
+      },
+
+      {
+        seat_id: "E3",
+        status: "Booked",
+        sold_on: "Counter",
+        sold_to: null,
+      },
+      {
+        seat_id: "E4",
+        status: "Unsold",
+        sold_on: null,
+        sold_to: null,
+      },
+      {
+        seat_id: "F3",
+        status: "Unsold",
+        sold_on: null,
+        sold_to: null,
+      },
+      {
+        seat_id: "F4",
+        status: "Sold",
+        sold_on: "Counter",
+        sold_to: null,
+      },
+      {
+        seat_id: "G3",
+        status: "Unsold",
+        sold_on: null,
+        sold_to: null,
+      },
+      {
+        seat_id: "G4",
+        status: "Sold",
+        sold_on: "Counter",
+        sold_to: null,
+      },
+      {
+        seat_id: "H3",
+        status: "Unsold",
+        sold_on: null,
+        sold_to: null,
+      },
+      {
+        seat_id: "H4",
+        status: "Sold",
+        sold_on: "Counter",
+        sold_to: null,
       },
     ],
-    route_and_price: [
+    seat_last_row: [
+      {
+        seat_id: "I1",
+        status: "Booked",
+        sold_on: "Counter",
+        sold_to: null,
+      },
+      {
+        seat_id: "I2",
+        status: "Sold",
+        sold_on: "Online",
+        sold_to: null,
+      },
+      {
+        seat_id: "I3",
+        status: "Sold",
+        sold_on: "Online",
+        sold_to: null,
+      },
+      {
+        seat_id: "I4",
+        status: "Sold",
+        sold_on: "Counter",
+        sold_to: null,
+      },
+
+      {
+        seat_id: "I5",
+        status: "Unsold",
+        sold_on: null,
+        sold_to: null,
+      },
+    ],
+    route_and_fare: [
+      {
+        route_id: "1",
+        start: "Dhaka",
+        dest: "Tangail",
+        price: 250,
+      },
       {
         route_id: "1",
         start: "Mohakhali",
@@ -155,7 +335,19 @@ let busData: BusData[] = [
   },
 ];
 
-const BookingMain: React.FC = () => {
+interface BookingQueryProps {
+  fromCity: string | undefined;
+  toCity: string | undefined;
+  doj: string | undefined;
+  travelClass: string | undefined;
+}
+
+const BookingMain: React.FC<BookingQueryProps> = ({
+  fromCity,
+  toCity,
+  doj,
+  travelClass,
+}) => {
   return (
     <div className="min-h-screen" style={{ backgroundColor: COLORS.offwhite }}>
       <div className="w-full max-w-[1150px] mx-auto lg:px-0 md:px-6 sm:px-4 py-4 flex lg:flex-row md:flex-col sm:flex-col gap-6">
@@ -168,7 +360,18 @@ const BookingMain: React.FC = () => {
             </p>
           </div>
           {busData?.map((bus, index) => {
-            return <BookingMainComponent data={bus} key={bus?.bus_id} />;
+            return (
+              <BookingMainComponent
+                data={bus}
+                routeInfo={{
+                  fromCity,
+                  toCity,
+                  doj,
+                  travelClass,
+                }}
+                key={bus?.bus_id}
+              />
+            );
           })}
         </div>
         <div className="lg:w-4/12 md:w-full sm:w-full"></div>

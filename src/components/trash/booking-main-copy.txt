@@ -14,7 +14,7 @@ interface Seat {
   sold_on: "Counter" | "Online" | null;
 }
 
-interface RouteAndPrice {
+interface RouteAndFare {
   route_id: string;
   start: string;
   dest: string;
@@ -30,7 +30,7 @@ interface BusData {
   seat_column: number;
   last_seat_column: number;
   seat: Seat[][];
-  route_and_price: RouteAndPrice[];
+  route_and_fare: RouteAndFare[];
 }
 
 interface BookingMainComponentProps {

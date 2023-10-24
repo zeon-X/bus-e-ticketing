@@ -13,14 +13,14 @@ interface FormDataInterface {
   selectedClass: string | undefined;
 }
 
-interface BookingHeadProps {
+interface BookingQueryProps {
   fromCity: string | undefined;
   toCity: string | undefined;
   doj: string | undefined;
   travelClass: string | undefined;
 }
 
-const BookingHead: React.FC<BookingHeadProps> = ({
+const BookingHead: React.FC<BookingQueryProps> = ({
   fromCity,
   toCity,
   doj,
@@ -63,11 +63,84 @@ const BookingHead: React.FC<BookingHeadProps> = ({
   };
 
   const handleDateInputChange = (res: any) => {
+    // console.log(typeof res);
+    // console.log(res);
+
     setFormData((prevData: any) => ({
       ...prevData,
       ["date"]: res,
     }));
     toggleOpen(0);
+  };
+
+  const handleChangeDateToNextDay = () => {
+    // Clone the current date from formData
+    let x = formData;
+    let tempDate = x.date;
+
+    // Add one day to the date
+    if (tempDate != null || tempDate != undefined) {
+      const today = new Date();
+      const oneDay = 24 * 60 * 60 * 1000; // One day in milliseconds
+
+      const dateDifference = Math.floor(
+        (tempDate.getTime() - today.getTime()) / oneDay
+      );
+
+      if (dateDifference < 7) {
+        // Increment the date
+        tempDate.setDate(tempDate.getDate() + 1);
+
+        let date = tempDate?.toLocaleDateString("en-US", {
+          year: "2-digit",
+          month: "2-digit",
+          day: "2-digit",
+        });
+        date = date?.replaceAll("/", "-");
+
+        let url = `/booking?fromCity=${formData.fromStopage}&toCity=${formData.toStopage}&doj=${date}&travelClass=${formData.selectedClass}`;
+
+        router.push(url);
+      } else {
+        // Handle the case where the date difference is more than 7 days
+        console.log("Date difference is more than 7 days.");
+      }
+    }
+  };
+
+  const handleChangeDateToPrevDay = () => {
+    // Clone the current date from formData
+    let x = formData;
+    let tempDate = x.date;
+
+    // Add one day to the date
+    if (tempDate != null || tempDate != undefined) {
+      const today = new Date();
+      const oneDay = 24 * 60 * 60 * 1000; // One day in milliseconds
+
+      const dateDifference = Math.floor(
+        (tempDate.getTime() - today.getTime()) / oneDay
+      );
+
+      if (dateDifference > -1) {
+        // Increment the date
+        tempDate.setDate(tempDate.getDate() - 1);
+
+        let date = tempDate?.toLocaleDateString("en-US", {
+          year: "2-digit",
+          month: "2-digit",
+          day: "2-digit",
+        });
+        date = date?.replaceAll("/", "-");
+
+        let url = `/booking?fromCity=${formData.fromStopage}&toCity=${formData.toStopage}&doj=${date}&travelClass=${formData.selectedClass}`;
+
+        router.push(url);
+      } else {
+        // Handle the case where the date difference is more than 7 days
+        console.log("Can not select expired days.");
+      }
+    }
   };
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -112,14 +185,26 @@ const BookingHead: React.FC<BookingHeadProps> = ({
                   <p className="text-sm font-semibold ">
                     {fromCity} - {toCity}
                   </p>
-                  <p className="text-sm ">{doj}</p>
+                  <p className="text-sm ">
+                    {formData?.date?.toLocaleDateString("en-US", {
+                      year: "2-digit",
+                      month: "long",
+                      day: "2-digit",
+                    })}
+                  </p>
                 </div>
               </div>
               <div className="flex gap-2">
-                <button className="px-4 py-2.5 bg-white rounded-tl-3xl rounded-bl-3xl text-xs font-semibold">
+                <button
+                  onClick={handleChangeDateToPrevDay}
+                  className="px-4 py-2.5 bg-white rounded-tl-3xl rounded-bl-3xl text-xs font-semibold"
+                >
                   PREV. DAY
                 </button>
-                <button className="px-4 py-2.5 bg-white rounded-tr-3xl rounded-br-3xl text-xs font-semibold">
+                <button
+                  onClick={handleChangeDateToNextDay}
+                  className="px-4 py-2.5 bg-white rounded-tr-3xl rounded-br-3xl text-xs font-semibold"
+                >
                   NEXT DAY
                 </button>
               </div>
