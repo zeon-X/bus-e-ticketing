@@ -5,6 +5,9 @@ import "react-day-picker/dist/style.css";
 import { useRouter } from "next/navigation";
 import getDisabledDaysFromPast from "@utils/getDisabledDaysFromPast";
 import COLORS from "@constants/COLORS";
+import { LEFT_ARROW, RIGHT_ARROW } from "../../../public/assets/svg-index";
+import Image from "next/image";
+import { busIcon1 } from "../../../public/assets";
 
 interface FormDataInterface {
   fromStopage: string | undefined;
@@ -179,15 +182,23 @@ const BookingHead: React.FC<BookingQueryProps> = ({
         <div style={{ backgroundColor: `${COLORS.offwhite2}` }}>
           <div className="w-full max-w-[1150px] mx-auto lg:px-0 md:px-6 sm:px-4 py-12">
             <div className=" flex lg:flex-row md:flex-row sm:flex-col justify-between items-center gap-6 ">
-              <div className="flex gap-2">
-                <div></div>
+              <div className="flex justify-center items-center gap-2">
+                <div>
+                  <Image
+                    src={busIcon1}
+                    width={60}
+                    height={60}
+                    alt=""
+                    className="rounded-full"
+                  />
+                </div>
                 <div>
                   <p className="text-sm font-semibold ">
                     {fromCity} - {toCity}
                   </p>
                   <p className="text-sm ">
                     {formData?.date?.toLocaleDateString("en-US", {
-                      year: "2-digit",
+                      year: "numeric",
                       month: "long",
                       day: "2-digit",
                     })}
@@ -197,15 +208,17 @@ const BookingHead: React.FC<BookingQueryProps> = ({
               <div className="flex gap-2">
                 <button
                   onClick={handleChangeDateToPrevDay}
-                  className="px-4 py-2.5 bg-white rounded-tl-3xl rounded-bl-3xl text-xs font-semibold"
+                  className="px-4 py-2.5 bg-white rounded-tl-3xl rounded-bl-3xl text-xs font-semibold flex justify-center items-center"
                 >
+                  <div className="h-[24px] w-[24px]">{LEFT_ARROW}</div>
                   PREV. DAY
                 </button>
                 <button
                   onClick={handleChangeDateToNextDay}
-                  className="px-4 py-2.5 bg-white rounded-tr-3xl rounded-br-3xl text-xs font-semibold"
+                  className="px-4 py-2.5  bg-white rounded-tr-3xl rounded-br-3xl text-xs font-semibold flex justify-center items-center"
                 >
                   NEXT DAY
+                  <div className="h-[24px] w-[24px]">{RIGHT_ARROW}</div>
                 </button>
               </div>
 

@@ -2,13 +2,6 @@ import COLORS from "@constants/COLORS";
 import React from "react";
 import BookingMainComponent from "./BookingMainComponent";
 
-interface Stopage {
-  stop_id: string;
-  stop_name: string;
-  arrival: string;
-  hold: boolean;
-}
-
 interface Seat {
   seat_id: string;
   status: "Booked" | "Sold" | "Unsold" | "Selected";
@@ -21,12 +14,13 @@ interface RouteAndFare {
   start: string;
   dest: string;
   price: number;
+  departure: string;
+  arrival: string;
 }
 
 interface BusData {
   bus_id: string;
   name: string;
-  stopage: Stopage[];
   type: string;
   seat_row: number;
   seat_column_left: number;
@@ -41,33 +35,8 @@ interface BusData {
 let busData: BusData[] = [
   {
     bus_id: "1",
-    name: "EKOTA EXPRESS (706)",
-    stopage: [
-      {
-        stop_id: "1",
-        stop_name: "Mohakhali",
-        arrival: "8:00 AM",
-        hold: true,
-      },
-      {
-        stop_id: "2",
-        stop_name: "Khilkhet",
-        arrival: "8:20 AM",
-        hold: false,
-      },
-      {
-        stop_id: "3",
-        stop_name: "Mirjapur",
-        arrival: "9:00 AM",
-        hold: false,
-      },
-      {
-        stop_id: "4",
-        stop_name: "Tangail",
-        arrival: "10:00 AM",
-        hold: true,
-      },
-    ],
+    name: "NIRALA EXPRESS",
+
     type: "Non AC",
     seat_row: 10,
     seat_column_left: 2,
@@ -312,24 +281,32 @@ let busData: BusData[] = [
         start: "Dhaka",
         dest: "Tangail",
         price: 250,
+        departure: "8:00 AM",
+        arrival: "10:00 AM",
       },
       {
         route_id: "1",
         start: "Mohakhali",
         dest: "Tangail",
         price: 250,
+        departure: "8:00 AM",
+        arrival: "10:00 AM",
       },
       {
         route_id: "2",
         start: "Mohakhali",
         dest: "Mirzapur",
         price: 150,
+        departure: "8:00 AM",
+        arrival: "10:00 AM",
       },
       {
         route_id: "3",
         start: "Mirzapur",
         dest: "Tangail",
         price: 100,
+        departure: "8:00 AM",
+        arrival: "10:00 AM",
       },
     ],
   },

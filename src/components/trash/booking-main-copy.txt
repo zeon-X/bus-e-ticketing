@@ -19,6 +19,8 @@ interface RouteAndFare {
   start: string;
   dest: string;
   price: number;
+  departure: string;
+  arrival: string;
 }
 
 interface BusData {
